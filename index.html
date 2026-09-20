@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои рецепты</title>
+
+
+.recipe-card {
+    background: #fffaf4;
+    border: 1px solid #eadfd2;
+    border-radius: 24px;
+    overflow: hidden;
+    margin: 18px 0;
+    box-shadow: 0 6px 20px rgba(91, 70, 54, 0.10);
+    cursor: pointer;
+}
+
+.recipe-card:active {
+    transform: scale(0.98);
+}
+
+.recipe-photo {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    display: block;
+}
+
+.recipe-photo-placeholder {
+    width: 100%;
+    height: 180px;
+    background: #eee4d7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 58px;
+}
+
+.recipe-card h3 {
+    margin: 17px 18px 6px;
+    color: #4f3b2d;
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.recipe-card p {
+    margin: 6px 18px;
+    color: #806b59;
+    font-size: 14px;
+}
+
+.recipe-card p:first-of-type {
+    font-size: 14px;
+}
+
+.recipe-card p:last-child {
+    display: inline-block;
+    margin: 10px 0 18px 18px;
+    padding: 9px 13px;
+    background: #f1e8dd;
+    border-radius: 12px;
+    color: #6b5543;
+    font-size: 13px;
+}
+.recipe-detail {
+    display: none;
+    background: #fffaf3;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.close-detail {
+    border: none;
+    background: #eee3d5;
+    color: #5b4636;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.detail-photo {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 22px;
+    margin-bottom: 20px;
+}
+
+.detail-photo-placeholder {
+    width: 100%;
+    height: 220px;
+    border-radius: 22px;
+    background: #eee3d5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+.recipe-detail h1 {
+    color: #5b4636;
+    margin-bottom: 8px;
+}
+
+.recipe-detail h2 {
+    color: #5b4636;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.detail-category {
+    color: #8b6f5a;
+    margin-bottom: 15px;
+}
+
+.detail-info {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.detail-info span {
+    background: #eee3d5;
+    padding: 9px 12px;
+    border-radius: 12px;
+    color: #5b4636;
+    font-size: 14px;
+}
+
+.detail-text {
+    white-space: pre-line;
+    color: #6d5746;
+    line-height: 1.7;
+    font-size: 15px;
+}
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f3eb;
+            color: #5b4636;
+            min-height: 100vh;
+        }
+
+        .app {
+            max-width: 430px;
+            margin: 0 auto;
+            padding: 25px 18px 40px;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .header p {
+            font-size: 15px;
+            color: #927c69;
+        }
+
+        .search {
+            width: 100%;
+            padding: 15px 18px;
+            border: none;
+            border-radius: 18px;
+            background: #fffaf3;
+            box-shadow: 0 4px 15px rgba(91, 70, 54, 0.06);
+            font-size: 15px;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        .roulette {
+            background: #e9d7c4;
+            border-radius: 25px;
+            padding: 22px;
+            margin-bottom: 28px;
+            text-align: center;
+        }
+
+        .roulette-icon {
+            font-size: 38px;
+            margin-bottom: 8px;
+        }
+
+        .roulette h2 {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .roulette p {
+            font-size: 14px;
+            color: #806957;
+            margin-bottom: 15px;
+        }
+
+        .roulette button {
+            border: none;
+            background: #765640;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 14px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .section-title {
+            font-size: 21px;
+            margin-bottom: 15px;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .category {
+            background: #fffaf3;
+            border-radius: 18px;
+            padding: 18px 12px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(91, 70, 54, 0.05);
+            cursor: pointer;
+        }
+
+        .category .emoji {
+            font-size: 27px;
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .category span:last-child {
+            font-size: 14px;
+        }
+
+        .empty {
+            background: #fffaf3;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .empty h3 {
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .empty p {
+            color: #927c69;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .add-button {
+            width: 100%;
+            border: none;
+            background: #765640;
+            color: white;
+            padding: 16px;
+            border-radius: 18px;
+            font-size: 16px;
+            margin-top: 18px;
+            cursor: pointer;
+        }
+        .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(70, 50, 35, 0.45);
+    padding: 20px;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.modal-content {
+    position: relative;
+    background: #fffaf3;
+    max-width: 390px;
+    margin: 20px auto;
+    padding: 25px 20px;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(70, 50, 35, 0.2);
+}
+
+.modal-content h2 {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    color: #5b4636;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 14px;
+    padding: 13px;
+    border: 1px solid #dfd0bd;
+    border-radius: 14px;
+    background: #fff;
+    color: #5b4636;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+.modal-content textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.close-button {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    border: none;
+    background: none;
+    font-size: 30px;
+    color: #8b6f5a;
+    cursor: pointer;
+}
+
+.save-recipe {
+    width: 100%;
+    border: none;
+    border-radius: 16px;
+    padding: 15px;
+    background: #8b6f5a;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="header">
+        <h1>Мои рецепты ♡</h1>
+        <p>Что будем готовить сегодня?</p>
+    </div>
+
+   
+<input
+        class="search"
+        id="searchInput"
+        type="text"
+        placeholder="🔍  Найти рецепт..."
+    >
+    
+<div class="roulette" id="roulette">
+
+    <div class="roulette-icon">🎲</div>
+
+    <h2>Что приготовить?</h2>
+
+    <p id="rouletteText">
+        Пусть сегодня решит рулетка
+    </p>
+
+    <select id="rouletteCategory">
+        <option value="all">Все блюда</option>
+        <option value="🍳 Завтраки">🍳 Завтраки</option>
+        <option value="🍲 Обеды">🍲 Обеды</option>
+        <option value="🍝 Ужины">🍝 Ужины</option>
+        <option value="🥗 Салаты">🥗 Салаты</option>
+        <option value="🍰 Десерты">🍰 Десерты</option>
+        <option value="🧁 Выпечка">🧁 Выпечка</option>
+        <option value="🍕 Закуски">🍕 Закуски</option>
+        <option value="🥤 Напитки">🥤 Напитки</option>
+    </select>
+
+    <button id="rouletteButton">
+        Крутить рулетку
+    </button>
+
+</div>
+
+    <h2 class="section-title">Категории</h2>
+
+    <div class="categories">
+
+    <div class="category" data-category="🍳 Завтраки">
+        <span class="emoji">🍳</span>
+        <span>Завтраки</span>
+    </div>
+
+    <div class="category" data-category="🍲 Обеды">
+        <span class="emoji">🍲</span>
+        <span>Обеды</span>
+    </div>
+
+    <div class="category" data-category="🍝 Ужины">
+        <span class="emoji">🍝</span>
+        <span>Ужины</span>
+    </div>
+
+    <div class="category" data-category="🥗 Салаты">
+        <span class="emoji">🥗</span>
+        <span>Салаты</span>
+    </div>
+
+    <div class="category" data-category="🍰 Десерты">
+        <span class="emoji">🍰</span>
+        <span>Десерты</span>
+    </div>
+
+    <div class="category" data-category="🧁 Выпечка">
+        <span class="emoji">🧁</span>
+        <span>Выпечка</span>
+    </div>
+
+    <div class="category" data-category="🍕 Закуски">
+        <span class="emoji">🍕</span>
+        <span>Закуски</span>
+    </div>
+
+    <div class="category" data-category="🥤 Напитки">
+        <span class="emoji">🥤</span>
+        <span>Напитки</span>
+    </div>
+
+</div>
+
+    <h2 id="recipesTitle" class="section-title">Мои рецепты</h2>
+
+
+<div id="categoryRecipes" class="category-recipes"></div>
+<button id="backToCategories" class="back-category" style="display: none;">
+    ← Все категории
+</button>
+
+<div id="recipeDetail" class="recipe-detail">
+    <button id="closeDetail" class="close-detail">← Назад</button>
+
+    <div id="recipeDetailContent"></div>
+</div>
+    <button class="add-button">
+
+        ＋ Добавить рецепт
+    </button>
+
+</div>
+
+</body>
+<div id="recipeModal" class="modal">
+    <div class="modal-content">
+        <button class="close-button" id="closeModal">×</button>
+
+        <h2>Новый рецепт 🍰</h2>
+
+        <input type="text" id="recipeTitle" placeholder="Название рецепта">
+<label class="photo-label">
+    📷 Фото рецепта
+    
+<input
+    type="file"
+    id="recipePhoto"
+    accept="image/*"
+    capture="environment"
+>
+</label>
+        <select id="recipeCategory">
+            <option value="">Выбери категорию</option>
+            <option>🍳 Завтраки</option>
+            <option>🍲 Обеды</option>
+            <option>🍝 Ужины</option>
+            <option>🥗 Салаты</option>
+            <option>🍰 Десерты</option>
+            <option>🧁 Выпечка</option>
+            <option>🍕 Закуски</option>
+            <option>🥤 Напитки</option>
+        </select>
+
+        <input type="number" id="recipeTime" placeholder="Время приготовления, минут">
+
+        <input type="number" id="recipeServings" placeholder="Количество порций">
+
+        <textarea id="recipeIngredients" placeholder="Ингредиенты Например: 2 яйца 200 г муки 100 мл молока"></textarea>
+
+        <textarea id="recipeSteps" placeholder="Как приготовить? Напиши шаги приготовления"></textarea>
+
+        <textarea id="recipeNotes" placeholder="Заметки (необязательно)"></textarea>
+
+        <button class="save-recipe" id="saveRecipe">Сохранить рецепт ❤️</button>
+    </div>
+</div>
+<script src="app.js"></script>
+</html>
+// 🎲 РУЛЕТКА
+
+const rouletteButton = document.querySelector("#rouletteButton");
+const rouletteText = document.querySelector("#rouletteText");
+
+rouletteButton.addEventListener("click", function () {
+
+    const savedRecipes = localStorage.getItem("myRecipes");
+
+    if (!savedRecipes) {
+        rouletteText.textContent = "Сначала добавь хотя бы один рецепт 🌷";
+        return;
+    }
+
+    const recipes = JSON.parse(savedRecipes);
+
+    if (recipes.length === 0) {
+        rouletteText.textContent = "Сначала добавь хотя бы один рецепт 🌷";
+        return;
+    }
+
+    // Немного прокручиваем варианты перед выбором
+    rouletteButton.disabled = true;
+
+    let counter = 0;
+
+    const animation = setInterval(function () {
+
+        const randomIndex = Math.floor(Math.random() * recipes.length);
+
+        rouletteText.textContent =
+            "🍴 " + recipes[randomIndex].title;
+
+        counter++;
+
+        if (counter >= 10) {
+
+            clearInterval(animation);
+
+            const finalIndex =
+                Math.floor(Math.random() * recipes.length);
+
+            const selectedRecipe = recipes[finalIndex];
+
+            rouletteText.textContent =
+                "✨ " + selectedRecipe.title;
+
+            rouletteButton.disabled = false;
+
+            // Открываем выбранный рецепт через небольшую паузу
+            setTimeout(function () {
+                openRecipe(finalIndex);
+            }, 700);
+        }
+
+    }, 100);
+
+});
