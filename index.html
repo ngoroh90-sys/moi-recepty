@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="ru">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мои рецепты</title>
 
-
+<style>
 .recipe-card {
     background: #fffaf4;
     border: 1px solid #eadfd2;
@@ -139,7 +140,6 @@
     line-height: 1.7;
     font-size: 15px;
 }
-    <style>
         * {
             box-sizing: border-box;
             margin: 0;
@@ -512,61 +512,3 @@
 </div>
 <script src="app.js"></script>
 </html>
-// 🎲 РУЛЕТКА
-
-const rouletteButton = document.querySelector("#rouletteButton");
-const rouletteText = document.querySelector("#rouletteText");
-
-rouletteButton.addEventListener("click", function () {
-
-    const savedRecipes = localStorage.getItem("myRecipes");
-
-    if (!savedRecipes) {
-        rouletteText.textContent = "Сначала добавь хотя бы один рецепт 🌷";
-        return;
-    }
-
-    const recipes = JSON.parse(savedRecipes);
-
-    if (recipes.length === 0) {
-        rouletteText.textContent = "Сначала добавь хотя бы один рецепт 🌷";
-        return;
-    }
-
-    // Немного прокручиваем варианты перед выбором
-    rouletteButton.disabled = true;
-
-    let counter = 0;
-
-    const animation = setInterval(function () {
-
-        const randomIndex = Math.floor(Math.random() * recipes.length);
-
-        rouletteText.textContent =
-            "🍴 " + recipes[randomIndex].title;
-
-        counter++;
-
-        if (counter >= 10) {
-
-            clearInterval(animation);
-
-            const finalIndex =
-                Math.floor(Math.random() * recipes.length);
-
-            const selectedRecipe = recipes[finalIndex];
-
-            rouletteText.textContent =
-                "✨ " + selectedRecipe.title;
-
-            rouletteButton.disabled = false;
-
-            // Открываем выбранный рецепт через небольшую паузу
-            setTimeout(function () {
-                openRecipe(finalIndex);
-            }, 700);
-        }
-
-    }, 100);
-
-});
